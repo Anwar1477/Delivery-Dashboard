@@ -1,0 +1,25 @@
+{
+  "deliveries": [
+    {
+      "date": "2023-10-21",
+      "recipient": "Nasir Hossain",
+      "address": "Plot 14, Mirpur DOHS, Dhaka",
+      "status": "Delivered",
+      "id": "5"
+    },
+    {
+      "id": "6",
+      "date": "2023-10-20",
+      "recipient": "Ayesha Siddiqua",
+      "address": "House 45, Block C, Mohammadpur, Dhaka",
+      "status": "In Transit"
+    },
+    {
+      "id": "7",
+      "date": "2023-10-19",
+      "recipient": "Tanvir Alam",
+      "address": "Road 2, Gulshan 2, Dhaka",
+      "status": "Not Delivered"
+    }
+  ]
+}

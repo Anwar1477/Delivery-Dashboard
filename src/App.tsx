@@ -1,26 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material/styles';
+import { Provider } from 'react-redux';
+import { store } from './store';
+import theme from './theme';
+import DashboardPage from './pages/DashboardPage/DashboardPage';
+import DeliveriesPage from './pages/DeliveriesPage/DeliveriesPage';
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
+import Layout from './components/Layout/Layout';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<DashboardPage />} />
+              <Route path="/deliveries" element={<DeliveriesPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </Layout>
+        </Router>
+      </ThemeProvider>
+    </Provider>
   );
-}
+};
 
 export default App;
