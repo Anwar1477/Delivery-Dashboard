@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface DrawerProps {
   open: boolean;
@@ -19,6 +19,7 @@ interface DrawerProps {
 
 const Drawer: React.FC<DrawerProps> = ({ open }) => {
   const navigate = useNavigate();
+  const location = useLocation(); // Hook to track current path
 
   const navItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
@@ -36,6 +37,7 @@ const Drawer: React.FC<DrawerProps> = ({ open }) => {
           boxSizing: 'border-box',
           transition: 'width 0.3s ease',
           overflowX: 'hidden',
+          background: '#2C80FF',
         },
       }}
     >
@@ -43,12 +45,16 @@ const Drawer: React.FC<DrawerProps> = ({ open }) => {
       <List>
         {navItems.map((item) => (
           <ListItem key={item.text} disablePadding>
-            <ListItemButton 
+            <ListItemButton
               onClick={() => navigate(item.path)}
+              selected={location.pathname === item.path}
               sx={{
                 minHeight: 48,
                 justifyContent: open ? 'initial' : 'center',
                 px: 2.5,
+                '&.Mui-selected': {
+                  backgroundColor: '#1F5FB1', 
+                },
               }}
             >
               <ListItemIcon

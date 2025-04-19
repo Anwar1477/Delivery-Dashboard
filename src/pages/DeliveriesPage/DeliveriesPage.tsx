@@ -7,7 +7,11 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
+  InputAdornment,
+  IconButton,
 } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
+import SearchIcon from '@mui/icons-material/Search';
 import DeliveryTable from '../../components/DeliveryTable/DeliveryTable';
 import DeliveryForm from '../../components/DeliveryForm/DeliveryForm';
 import { useAppDispatch, useAppSelector } from '../../store';
@@ -29,6 +33,10 @@ const DeliveriesPage: React.FC = () => {
       delivery.address.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleClearSearch = () => {
+    setSearchTerm('');
+  };
+
   return (
     <Box>
       <Box
@@ -49,14 +57,37 @@ const DeliveriesPage: React.FC = () => {
         </Button>
       </Box>
 
-      <TextField
-        label="Search by recipient or address"
-        variant="outlined"
-        fullWidth
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        sx={{ mb: 3 }}
-      />
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 3 }}>
+        <TextField
+          label="Search by recipient or address"
+          variant="outlined"
+          fullWidth
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          sx={{
+            width: '50%', 
+            borderRadius: '8px',
+            backgroundColor: '#f5f5f5',
+            '& .MuiOutlinedInput-root': {
+              borderRadius: '8px',
+            },
+          }}
+          InputProps={{
+            startAdornment: searchTerm && (
+              <InputAdornment position="end">
+                <IconButton onClick={handleClearSearch}>
+                  <ClearIcon />
+                </IconButton>
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position="end">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+        />
+      </Box>
 
       <DeliveryTable deliveries={filteredDeliveries} loading={loading} />
 
