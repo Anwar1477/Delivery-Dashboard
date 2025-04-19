@@ -5,16 +5,24 @@ import {
   GridActionsCellItem,
   GridRowId,
   GridToolbar,
+  GridRenderCellParams,
 } from '@mui/x-data-grid';
 import {
   Edit as EditIcon,
   Delete as DeleteIcon,
 } from '@mui/icons-material';
-import { Delivery, DeliveryStatus } from '../../types';
+import { Delivery } from '../../types';
 import { useAppDispatch } from '../../store';
 import { deleteExistingDelivery } from '../../features/deliveries/deliveriesThunks';
 import DeliveryForm from '../DeliveryForm/DeliveryForm';
-import { Box, Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@mui/material';
 
 interface DeliveryTableProps {
   deliveries: Delivery[];
@@ -29,7 +37,7 @@ const DeliveryTable: React.FC<DeliveryTableProps> = ({ deliveries, loading }) =>
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const handleEditClick = (id: GridRowId) => {
-    const delivery = deliveries.find(d => d.id === id);
+    const delivery = deliveries.find((d) => d.id === id);
     if (delivery) {
       setSelectedDelivery(delivery);
       setOpenEditDialog(true);
@@ -50,7 +58,15 @@ const DeliveryTable: React.FC<DeliveryTableProps> = ({ deliveries, loading }) =>
   };
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', width: 100 },
+    {
+      field: 'serial',
+      headerName: 'ID',
+      width: 100,
+      sortable: false,
+      filterable: false,
+      renderCell: (params: GridRenderCellParams<any, any, any>) =>
+        params.api.getRowIndexRelativeToVisibleRows(params.id) + 1,
+    },
     { field: 'date', headerName: 'Date', width: 150 },
     { field: 'recipient', headerName: 'Recipient', width: 200 },
     { field: 'address', headerName: 'Address', width: 300 },
@@ -87,6 +103,7 @@ const DeliveryTable: React.FC<DeliveryTableProps> = ({ deliveries, loading }) =>
         rows={deliveries}
         columns={columns}
         loading={loading}
+        getRowId={(row) => row.id}
         slots={{ toolbar: GridToolbar }}
         initialState={{
           pagination: {
@@ -116,7 +133,9 @@ const DeliveryTable: React.FC<DeliveryTableProps> = ({ deliveries, loading }) =>
           Are you sure you want to delete this delivery?
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteConfirm} color="error">Yes</Button>
+          <Button onClick={handleDeleteConfirm} color="error">
+            Yes
+          </Button>
           <Button onClick={() => setOpenDeleteDialog(false)}>No</Button>
         </DialogActions>
       </Dialog>
